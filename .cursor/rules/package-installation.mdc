@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+- All new packages should be installed in the conda environment called 'commodity-price-forecasting'
+- The conda environment can be activated with 'conda activate commodity-price-forecasting'
+- THe requirements of 'commodity-price-forecasting' are in requirements.txt
