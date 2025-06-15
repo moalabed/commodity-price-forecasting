@@ -77,34 +77,6 @@ def load_commodity_data(commodity_name=None, start_date=None):
     
     return df
 
-def update_database():
-    """Refresh the database with latest commodity prices"""
-    st.session_state.updating = True
-    
-    # We're not deleting the database, just appending new data
-    # Get the latest date in the database
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("SELECT MAX(date) FROM commodities")
-    last_date = cursor.fetchone()[0]
-    conn.close()
-    
-    if last_date:
-        # Convert to datetime and add one day for the start date
-        start_date = (pd.to_datetime(last_date) + timedelta(days=1)).strftime('%Y-%m-%d')
-        st.info(f"Updating database with data since {start_date}")
-    else:
-        # If database is empty or doesn't exist, start from 2000
-        start_date = '2000-01-01'
-        st.info(f"Creating new database with data since {start_date}")
-    
-    # Fetch new data
-    with st.spinner("Fetching latest commodity data..."):
-        fetch_commodity_data(start_date, DB_PATH)
-    
-    st.success("Database updated successfully!")
-    st.session_state.updating = False
-
 def create_correlation_heatmap(df, commodities, years=None):
     """Create an interactive correlation heatmap between commodities"""
     if df.empty:
@@ -516,15 +488,22 @@ def main():
     # Sidebar for controls
     st.sidebar.title("Controls")
     
-    # Refresh data button
-    refresh_col, status_col = st.sidebar.columns([2, 3])
-    with refresh_col:
-        if st.button("🔄 Refresh Data"):
-            update_database()
-    
-    with status_col:
-        if st.session_state.updating:
-            st.info("Updating...")
+    # Add automatic update notification instead of refresh button
+    with st.sidebar:
+        st.info("📅 Data is automatically updated daily at midnight")
+        
+        # Show last update time
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            cursor = conn.cursor()
+            cursor.execute("SELECT MAX(date) FROM commodities")
+            last_date = cursor.fetchone()[0]
+            conn.close()
+            
+            if last_date:
+                st.caption(f"Last updated: {last_date}")
+        except:
+            st.caption("Database status: Unknown")
     
     # Commodity selection
     commodities_list = ["All"] + list(COMMODITIES.keys())
