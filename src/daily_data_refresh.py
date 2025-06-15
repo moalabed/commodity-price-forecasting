@@ -18,9 +18,10 @@ sys.path.append(str(current_dir))
 
 from commodity_price_data import COMMODITIES, fetch_commodity_data
 
-# Configuration
-DB_PATH = current_dir / 'commodities.db'
-LOG_PATH = current_dir / 'data_refresh.log'
+# Configuration - Use root directory for database and backups to match Streamlit app
+project_root = current_dir.parent  # Go up one level from src/ to project root
+DB_PATH = project_root / 'commodities.db'
+LOG_PATH = project_root / 'data_refresh.log'  # Move log to root as well
 START_DATE = '2000-01-01'  # Full historical data refresh
 
 # Setup logging
@@ -52,7 +53,8 @@ def backup_database():
 def cleanup_old_backups(max_backups=7):
     """Keep only the last N backups to save disk space"""
     try:
-        backup_files = sorted(current_dir.glob('commodities.backup_*.db'))
+        # Look for backup files in the project root directory now
+        backup_files = sorted(project_root.glob('commodities.backup_*.db'))
         if len(backup_files) > max_backups:
             for old_backup in backup_files[:-max_backups]:
                 old_backup.unlink()

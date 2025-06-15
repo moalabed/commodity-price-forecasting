@@ -13,7 +13,8 @@ chmod +x "$PYTHON_SCRIPT"
 
 # Create the cron command
 # This will run at midnight (00:00) every day
-CRON_COMMAND="0 0 * * * /home/$(whoami)/miniconda3/envs/$CONDA_ENV/bin/python $PYTHON_SCRIPT >> $PROJECT_DIR/src/cron.log 2>&1"
+# Updated to use root directory for cron logs to match the database and log location changes
+CRON_COMMAND="0 0 * * * /home/$(whoami)/miniconda3/envs/$CONDA_ENV/bin/python $PYTHON_SCRIPT >> $PROJECT_DIR/cron.log 2>&1"
 
 # Add to crontab
 (crontab -l 2>/dev/null; echo "$CRON_COMMAND") | crontab -
@@ -26,5 +27,5 @@ echo "To verify the cron job was added, run: crontab -l"
 echo "To remove the cron job later, run: crontab -e"
 echo ""
 echo "Logs will be written to:"
-echo "- $PROJECT_DIR/src/data_refresh.log (detailed logs)"
-echo "- $PROJECT_DIR/src/cron.log (cron execution logs)" 
+echo "- $PROJECT_DIR/data_refresh.log (detailed logs)"
+echo "- $PROJECT_DIR/cron.log (cron execution logs)" 
