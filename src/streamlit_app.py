@@ -13,26 +13,12 @@ from datetime import datetime, timedelta
 from prophet import Prophet
 import yfinance as yf
 
-# Add the src directory to path for imports
-current_dir = os.path.dirname(os.path.abspath(__file__))
-if current_dir not in sys.path:
-    sys.path.append(current_dir)
+from commodity_price_data import COMMODITIES, create_database, fetch_commodity_data
+from forecast_commodity_prices import (
+    prepare_data_for_prophet, train_prophet_model, create_prophet_components_plot,
+    train_arima_model, train_lstm_model, VIBRANT_COLORS
+)
 
-# Import local modules
-try:
-    from commodity_price_data import COMMODITIES, create_database, fetch_commodity_data
-    from forecast_commodity_prices import (
-        prepare_data_for_prophet, train_prophet_model, create_prophet_components_plot,
-        train_arima_model, train_lstm_model, VIBRANT_COLORS
-    )
-except ImportError:
-    # If that fails, try with the full path
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-    from src.commodity_price_data import COMMODITIES, create_database, fetch_commodity_data
-    from src.forecast_commodity_prices import (
-        prepare_data_for_prophet, train_prophet_model, create_prophet_components_plot, 
-        train_arima_model, train_lstm_model, VIBRANT_COLORS
-    )
 
 # Set page config
 st.set_page_config(
