@@ -13,11 +13,8 @@ from datetime import datetime, timedelta
 from prophet import Prophet
 import yfinance as yf
 
-from commodity_price_data import COMMODITIES, create_database, fetch_commodity_data
-from forecast_commodity_prices import (
-    prepare_data_for_prophet, train_prophet_model, create_prophet_components_plot,
-    train_arima_model, train_lstm_model, VIBRANT_COLORS
-)
+from src import COMMODITIES, create_database, fetch_commodity_data, prepare_data_for_prophet, train_prophet_model, create_prophet_components_plot,train_arima_model, train_lstm_model, VIBRANT_COLORS
+
 
 
 # Set page config
@@ -468,7 +465,7 @@ def main():
             with st.spinner("Fetching commodity data (this may take several minutes)..."):
                 fetch_commodity_data('2000-01-01', DB_PATH)
             st.success("Initial data fetched successfully!")
-            st.experimental_rerun()
+            st.rerun()
         return
     
     # Sidebar for controls

@@ -2,3 +2,6 @@ Users/jean-axelpotey/Library/Application Support/Trae/User/settings.json
 JAx
 Users/
 .ipynb_checkpoints/
+__pycache__/
+*.pyc
+*.pyo
