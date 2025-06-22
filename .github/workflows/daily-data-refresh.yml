@@ -19,41 +19,32 @@ jobs:
       with:
         python-version: '3.11'
         
-    - name: Set up Conda
-      uses: conda-incubator/setup-miniconda@v3
-      with:
-        auto-update-conda: true
-        python-version: '3.11'
-        environment-file: false
-        
-    - name: Create and activate conda environment
-      run: |
-        conda create -n commodity-price-forecasting python=3.11 -y
-        conda activate commodity-price-forecasting
-      shell: bash -l {0}
-      
     - name: Install dependencies
       run: |
-        conda activate commodity-price-forecasting
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
-      shell: bash -l {0}
-      
+        
+    - name: Debug - Show environment
+      run: |
+        pwd
+        ls -la
+        echo "Python path:"
+        python -c "import sys; print('\n'.join(sys.path))"
+        
     - name: Run daily data refresh
       run: |
-        conda activate commodity-price-forecasting
-        python -m tasks.daily_data_refresh
-      shell: bash -l {0}
+        export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+        python tasks/daily_data_refresh.py
       
     - name: Check if database was updated
       run: |
         if [ -f "commodities.db" ]; then
-          echo "Database file exists and was updated"
+          echo "✅ Database file exists and was updated"
           ls -la commodities.db
         else
-          echo "Warning: Database file not found"
+          echo "❌ Warning: Database file not found"
           exit 1
         fi
-      shell: bash
       
     - name: Commit and push updated database
       run: |
@@ -66,7 +57,6 @@ jobs:
           git commit -m "Daily data refresh: $(date '+%Y-%m-%d %H:%M:%S UTC')"
           git push
         fi
-      shell: bash
       
     - name: Upload database as artifact (backup)
       uses: actions/upload-artifact@v4
@@ -74,4 +64,4 @@ jobs:
       with:
         name: commodities-db-${{ github.run_number }}
         path: commodities.db
-        retention-days: 7 
+        retention-days: 7
