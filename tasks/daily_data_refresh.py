@@ -12,14 +12,12 @@ import logging
 from datetime import datetime, timedelta
 from pathlib import Path
 
-# Add the src directory to path for imports
-current_dir = Path(__file__).parent
-sys.path.append(str(current_dir))
-
+# Import from the src module using proper module structure
 from src import COMMODITIES, fetch_commodity_data
 
 # Configuration - Use root directory for database and backups to match Streamlit app
-project_root = current_dir.parent  # Go up one level from src/ to project root
+current_dir = Path(__file__).parent
+project_root = current_dir.parent  # Go up one level from tasks/ to project root
 DB_PATH = project_root / 'commodities.db'
 
 START_DATE = '2000-01-01'  # Full historical data refresh
