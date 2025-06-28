@@ -193,57 +193,7 @@ python tasks/daily_data_refresh.py
 - **Model Accuracy**: Different models may produce varying forecasts
 - **LSTM Requirements**: Neural networks need substantial historical data
 
-## Development & Contribution
 
-### Local Development Setup
-```bash
-# Install development dependencies
-pip install -r requirements.txt
-
-# Run tests
-python -m pytest tests/ -v
-
-# Code quality checks
-flake8 src/ streamlit_app.py
-black src/ streamlit_app.py
-```
-
-### Environment Variables
-- `PYTHONPATH`: Set to project root for module imports
-- Database path: Defaults to `commodities.db` in project root
-
-## Deployment
-
-### Streamlit Cloud Deployment
-The application is automatically deployed to Streamlit Cloud with:
-- **Automatic updates** from the main branch
-- **Daily data refresh** through GitHub Actions
-- **Environment management** via requirements.txt
-- **Database persistence** through repository commits
-
-### Manual Deployment
-```bash
-# Deploy to Streamlit Cloud
-streamlit run streamlit_app.py
-
-# Or use other hosting platforms with:
-pip install -r requirements.txt
-streamlit run streamlit_app.py --server.port $PORT
-```
-
-## Monitoring & Maintenance
-
-### Automated Monitoring
-- Daily data integrity checks
-- Backup verification and cleanup
-- GitHub Actions workflow monitoring
-- Error logging and recovery
-
-### Manual Maintenance
-- Review forecast accuracy periodically
-- Update model parameters as needed
-- Monitor data source reliability
-- Check deployment status
 
 ## License
 
