@@ -50,8 +50,8 @@ This project provides a comprehensive Streamlit web application that enables use
 
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd Commodity-price-forecasting
+git clone <repository-url> #use https or ssh
+cd commodity-price-forecasting
 
 # Create and activate conda environment
 conda create -n commodity-price-forecasting python=3.11
