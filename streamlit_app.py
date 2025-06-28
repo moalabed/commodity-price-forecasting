@@ -787,8 +787,12 @@ def main():
         latest_price = df.loc[df['date'] == df['date'].max(), 'close'].values[0]
         earliest_date = df['date'].min()
         latest_date = df['date'].max()
-        min_price = df['close'].min()
-        max_price = df['close'].max()
+        
+        # Calculate 52-week range (365 days from latest date)
+        fifty_two_weeks_ago = latest_date - timedelta(days=365)
+        df_52_weeks = df[df['date'] >= fifty_two_weeks_ago]
+        min_price = df_52_weeks['close'].min()
+        max_price = df_52_weeks['close'].max()
         
         # Calculate price change for different time periods
         # 1-day change
